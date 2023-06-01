@@ -15,10 +15,12 @@ export default function OrderCard({ id, title, imageUrl, price, handleDelete }) 
         <p className="text-lg font-medium">
           ${ price }
         </p>
-        <XMarkIcon
-          className="h-6 w-6 text-black cursor-pointer"
-          onClick={() => handleDelete(id)}
-        />
+        { handleDelete ? (
+          <XMarkIcon
+            className="h-6 w-6 text-black cursor-pointer"
+            onClick={() => handleDelete(id)}
+          />
+        ) : null}
       </div>
     </div>
   )
