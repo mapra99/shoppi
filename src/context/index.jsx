@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
+import { filterItemsByTitle, filterItemsByCategory } from '../utils'
 
 export const ShoppingCartContext = createContext()
 
@@ -29,6 +30,40 @@ export const ShoppingCartProvider = ({ children }) => {
 
   const [orders, setOrders] = useState([])
 
+  const [items, setItems] = useState(null)
+  const [filteredItems, setFilteredItems] = useState(null)
+  const [searchTitleTerm, setSearchTitleTerm] = useState(null)
+  const [searchCategoryTerm, setSearchCategoryTerm] = useState(null)
+
+  useEffect(() => {
+    fetch('https://api.escuelajs.co/api/v1/products')
+      .then(response => response.json())
+      .then(data => setItems(data))
+  }, [])
+
+  useEffect(() => {
+    if (!items) return
+
+    let newFilteredItems = [...items]
+    console.log({ newFilteredItems, items, searchTitleTerm, searchCategoryTerm })
+    if (!searchTitleTerm && !searchCategoryTerm) {
+      setFilteredItems([...newFilteredItems])
+      return
+    }
+
+    if (searchTitleTerm) {
+      newFilteredItems = filterItemsByTitle(newFilteredItems, searchTitleTerm)
+    }
+
+    if (searchCategoryTerm) {
+      newFilteredItems = filterItemsByCategory(newFilteredItems, searchCategoryTerm)
+    }
+
+    console.log({ newFilteredItems, items, searchTitleTerm, searchCategoryTerm })
+
+    setFilteredItems(newFilteredItems)
+  }, [items, searchTitleTerm, searchCategoryTerm])
+
   return (
     <ShoppingCartContext.Provider value={{
       count,
@@ -45,6 +80,11 @@ export const ShoppingCartProvider = ({ children }) => {
       closeCheckoutMenu,
       orders,
       setOrders,
+      items,
+      searchTitleTerm,
+      setSearchTitleTerm,
+      setSearchCategoryTerm,
+      filteredItems
     }}>
       {children}
     </ShoppingCartContext.Provider>
