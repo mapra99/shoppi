@@ -61,24 +61,13 @@ export default function Navbar() {
       </ul>
 
       <ul className="flex items-center gap-4">
-        <li className="text-black/60">
-          mprada@hey.com
-        </li>
-        <li>
-          <NavLink to="/my-orders" className={activeStyles}>
-            My Orders
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/my-account" className={activeStyles}>
-            My Account
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/sign-in" className={activeStyles}>
-            Sign in
-          </NavLink>
-        </li>
+        { context.orders.length > 0 ? (
+          <li>
+            <NavLink to="/my-orders" className={activeStyles}>
+              My Orders
+            </NavLink>
+          </li>
+        ) : null}
         <li
           className="flex items-center gap-1 cursor-pointer"
           onClick={toggleCheckoutMenu}

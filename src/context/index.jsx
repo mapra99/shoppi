@@ -45,7 +45,6 @@ export const ShoppingCartProvider = ({ children }) => {
     if (!items) return
 
     let newFilteredItems = [...items]
-    console.log({ newFilteredItems, items, searchTitleTerm, searchCategoryTerm })
     if (!searchTitleTerm && !searchCategoryTerm) {
       setFilteredItems([...newFilteredItems])
       return
@@ -58,8 +57,6 @@ export const ShoppingCartProvider = ({ children }) => {
     if (searchCategoryTerm) {
       newFilteredItems = filterItemsByCategory(newFilteredItems, searchCategoryTerm)
     }
-
-    console.log({ newFilteredItems, items, searchTitleTerm, searchCategoryTerm })
 
     setFilteredItems(newFilteredItems)
   }, [items, searchTitleTerm, searchCategoryTerm])
